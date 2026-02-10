@@ -32,7 +32,7 @@ Author: Mikhail Ivanov masluf@gmail.com
 
 ### graphite_pre.cfg and garaphite.cfg
 - special overrides for R3MEN graphite bed \
-  include graphite_pre.cfg after mai.cfg and garaphite.cfg after overrides.cfg
+  include graphite_pre.cfg after main.cfg and garaphite.cfg after overrides.cfg
   
 ### tool.cfg
 > [!NOTE]
