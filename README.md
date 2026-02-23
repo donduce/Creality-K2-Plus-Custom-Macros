@@ -97,8 +97,9 @@ To start printing from the CFS after the spool holder:
 > Also, there is an explanation of each virtual pins in the comments in main.cfg.
 
  1. Copy files from `/extras/` dir to you printer `/usr/share/klipper/klippy/extras/` via SSH (find the SSH password from touch UI > Cogwheel > General > Root account Information)
- 2. Upload the `custom` directory of this repo to your printer using the Fluidd web interface.
- 3. Edit your `printer.cfg`:
+ 2. Reboot printer by power button. **NOT** by "Firmware restart" button in Fluidd.
+ 3. Upload the `custom` directory of this repo to your printer using the Fluidd web interface.
+ 4. Edit your `printer.cfg`:
      1. Add after the `[includes ...]` block at the top:
         ```diff
         ...
@@ -130,14 +131,24 @@ Note: `tool.cfg` is optional.
 
 ### Update your slicer settings
 
-You need change some start g-codes in slicer. \
+You need change some g-codes and parameters in slicer: 
+ - In Multimaterial tab in Printer settings you need to switch on *Manual Filament Change*
+    ![изображение](https://github.com/user-attachments/assets/c69695b4-2daa-42a4-8690-5e2150cb7631)
+   
 If you DO NOT use Tool.cfg:
 
   - Machine start g-code:
     ```
     START_PRINT EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer_single] CHAMBER_TEMP=[overall_chamber_temperature]
     ```
-
+  - (Machine) Change filament g-code:
+    ```diff
+    G1 E-[old_retract_length] F2400
+    G2 Z{z_after_toolchange + 0.4} I0.86 J0.86 P1 F10000 ; spiral lift a little from second lift
+    G1 X10 Y350 F30000
+    T[next_extruder]
+    ```
+    
 If you use Tool.cfg:
   - Machine start g-code:
     ```
@@ -157,8 +168,7 @@ If you use Tool.cfg:
     CHECK_REFILL ROLE=[extrusion_role]
     ```
     
-  - In Multimaterial tab in Printer settings you need to switch on *Manual Filament Change*
-    ![изображение](https://github.com/user-attachments/assets/c69695b4-2daa-42a4-8690-5e2150cb7631)   
+ 
 
   - In Filament start and end g-codes remove all.
 > [!WARNING]
